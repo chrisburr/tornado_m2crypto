@@ -1,4 +1,5 @@
 from M2Crypto import SSL, m2
+from os.path import isdir
 
 
 _SSL_CONTEXT_KEYWORDS = frozenset(['ssl_version', 'certfile', 'keyfile', 'dhparam',
@@ -17,7 +18,7 @@ def ssl_options_to_m2_context(ssl_options):
     * cert_reqs: (default none) Requirements over the remote certificate
                   (verify_none, verify_peer, verify_fail_if_no_peer_cert or verify_client_once from `~M2Crypto.SSL`)
     * verify_depth: (default 10) recursion depth for certificate verification
-    * ca_certs: path to the CA file
+    * ca_certs: path to the CA file or the CA folder
     * ciphers: cipher list (see `~M2Crypto.SSL.Context.set_cipher_list`)
     * sslDebug: if True, will printout the openssl debug info
 
@@ -45,7 +46,11 @@ def ssl_options_to_m2_context(ssl_options):
       context.set_verify(SSL.verify_none, 10)
 
     if 'ca_certs' in ssl_options:
-        if not context.load_verify_locations(ssl_options['ca_certs']):
+        if isdir(ssl_options['ca_certs']):
+            load = context.load_verify_locations(capath=ssl_options['ca_certs'])
+        else:
+            load = context.load_verify_locations(cafile=ssl_options['ca_certs'])
+        if not load:
           raise Exception('CA certificates not loaded')
     if 'ciphers' in ssl_options:
         context.set_cipher_list(ssl_options['ciphers'])
