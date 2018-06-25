@@ -7,7 +7,7 @@ default_ca = CA_default
 [ CA_default ]
 # Directory and file locations.
 # EDIT HERE
-dir               = /home/chaen/dirac/tornadoM2Crypto/tests/certs/ca    #PUT THE RIGHT DIR HERE!
+dir               = /home/chaen/dirac/tornadoM2Crypto/tornado_m2crypto/tornado_m2crypto/test/certs/ca    #PUT THE RIGHT DIR HERE!
 #######
 certs             = $dir/certs
 crl_dir           = $dir/crl
@@ -35,7 +35,7 @@ default_days      = 375
 preserve          = no
 policy            = policy_loose
 #email_in_dn = no                # <-- fixes CONF_get_string:no value
-
+copy_extensions=copy
 
 
 [ policy_strict ]
@@ -97,9 +97,12 @@ extendedKeyUsage = clientAuth, emailProtection
 [ server_cert ]
 # Extensions for server certificates (`man x509v3_config`).
 basicConstraints = CA:FALSE
-nsCertType = server
-nsComment = "OpenSSL Generated Server Certificate"
-subjectKeyIdentifier = hash
-authorityKeyIdentifier = keyid,issuer:always
-keyUsage = critical, digitalSignature, keyEncipherment
-extendedKeyUsage = serverAuth
+#nsComment = "OpenSSL Generated Server Certificate"
+#subjectKeyIdentifier = hash
+#authorityKeyIdentifier = keyid,issuer:always
+#keyUsage = critical, digitalSignature, keyEncipherment
+#extendedKeyUsage = serverAuth,clientAuth
+#subjectAltName = @alt_names
+                                                                                                                                                                                                                
+
+                                                                                                                                                                                                                 
