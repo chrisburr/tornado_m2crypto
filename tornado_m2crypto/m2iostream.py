@@ -126,6 +126,20 @@ class M2IOStream(SSLIOStream):
         `~M2Crypto.SSL.SSLContext` object or a dictionary of keywords arguments (see `~m2netutil.ssl_options_to_m2_context`.)
         """
         self._ssl_options = kwargs.pop('ssl_options', _client_m2_ssl_defaults)
+
+        if kwargs.pop('create_context_on_init', False):
+            server_side = kwargs.pop('server_side', False)
+            do_handshake_on_connect = kwargs.pop('do_handshake_on_connect', False)
+            connection = args[0]
+            self.socket = m2_wrap_socket(connection,
+                                          self._ssl_options,
+                                          server_side = server_side,
+                                          do_handshake_on_connect=do_handshake_on_connect)
+
+            args = (self.socket,) + args[1:]
+
+
+
         IOStream.__init__(self, *args, **kwargs)
         self._done_setup = False
         self._ssl_accepting = True
@@ -331,3 +345,49 @@ class M2IOStream(SSLIOStream):
             self._connect_future = None
             future.set_result(self)
         self._connecting = False
+
+
+    def get_ssl_certificate(self, **kwargs):
+        """Returns the client's SSL certificate, if any.
+
+        To use client certificates, the HTTPServer's
+        `M2Crypto.SSL.Context.set_verify` field must be set, e.g.::
+
+            SSL_OPTS = {
+
+              'certfile': 'hostcert.pem',
+              'keyfile': 'hostkey.pem',
+              'cert_reqs': M2Crypto.SSL.verify_peer,
+              'ca_certs': ca.cert.pem',
+            }
+
+            server = HTTPServer(app, ssl_options=SSL_OPTS)
+
+        The return value is a M2Crypto.X509.X509Certificate
+        See `M2Crypto.SSL.Connection.get_peer_cert` for more detail
+        """
+        return self.socket.get_peer_cert()
+
+
+    def get_ssl_certificate_chain(self, **kwargs):
+        """Returns the client's SSL certificate chain, if any.
+         (Note that the chain does not contains the certificate itself !)
+
+        To use client certificates, the HTTPServer's
+        `M2Crypto.SSL.Context.set_verify` field must be set, e.g.::
+
+            SSL_OPTS = {
+
+              'certfile': 'hostcert.pem',
+              'keyfile': 'hostkey.pem',
+              'cert_reqs': M2Crypto.SSL.verify_peer,
+              'ca_certs': ca.cert.pem',
+            }
+
+            server = HTTPServer(app, ssl_options=SSL_OPTS)
+
+        The return value is a M2Crypto.X509.X509Stack
+        See `M2Crypto.SSL.Connection.get_peer_cert_chain` for more detail
+        """
+
+        return self.socket.get_peer_cert_chain()

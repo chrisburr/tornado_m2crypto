@@ -16,6 +16,7 @@ SSL_OPTS = {
   'ca_certs': CERTDIR + 'ca/ca.cert.pem',
 }
 
+print SSL_OPTS
 #SSL_OPTS = {
 #
 #  'certfile': '/tmp/hostcert/hostcert.pem',
@@ -27,15 +28,15 @@ SSL_OPTS = {
 
 # Patching
 # You need it because TCPServer calls directly ssl_wrap_socket
-from tornado_m2crypto.m2netutil import m2_wrap_socket
-import tornado.netutil
-tornado.netutil.ssl_wrap_socket = m2_wrap_socket
+# from tornado_m2crypto.m2netutil import m2_wrap_socket
+# import tornado.netutil
+# tornado.netutil.ssl_wrap_socket = m2_wrap_socket
 
 import tornado.iostream
 tornado.iostream.SSLIOStream.configure('tornado_m2crypto.m2iostream.M2IOStream')
 
-import tornado.httputil
-tornado.httputil.HTTPServerRequest.configure('tornado_m2crypto.m2httputil.M2HTTPServerRequest')
+# import tornado.httputil
+# tornado.httputil.HTTPServerRequest.configure('tornado_m2crypto.m2httputil.M2HTTPServerRequest')
 
 
 
@@ -47,6 +48,7 @@ import tornado.web
 class getToken(tornado.web.RequestHandler):
     def get(self):
         print self.request.get_ssl_certificate().as_text() #False =  dictionnaire, True=Binaire
+        print ("CHRIS %s"%type(self.request.connection.stream))
         print "CHRIS %s"%len(self.request.get_ssl_certificate_chain())
         for c in self.request.connection.stream.socket.get_peer_cert_chain():
           print ('++++++++++++++++++++++')

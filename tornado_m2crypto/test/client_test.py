@@ -1,8 +1,8 @@
 import requests
 #CERT='test.crt'
 #KEY='test.key'
-CERT='/tmp/chaen.pem'
-KEY='/tmp/chaen.pem'
+#CERT='/tmp/chaen.pem'
+#KEY='/tmp/chaen.pem'
 #CERT='/tmp/.globus/usercert.pem'
 #KEY='/tmp/.globus/new_userkey.pem'
 #CERTDIR = '/home/chaen/dirac/tornadoM2Crypto/test_tornado_m2crypto/certs/'
@@ -10,8 +10,8 @@ CERTDIR = '/home/chaen/dirac/tornadoM2Crypto/tornado_m2crypto/tornado_m2crypto/t
 import os
 CERT= os.path.realpath(CERTDIR + 'MrBoinc/usercert.pem')
 KEY=os.path.realpath(CERTDIR  + 'MrBoinc/userkey.pem')
-CERT= os.path.realpath(CERTDIR + 'MrBoinc/proxy.pem')
-KEY= os.path.realpath(CERTDIR  + 'MrBoinc/proxy.pem')
+#CERT= os.path.realpath(CERTDIR + 'MrBoinc/proxy.pem')
+#KEY= os.path.realpath(CERTDIR  + 'MrBoinc/proxy.pem')
 
 print (CERT,KEY)
 import sys
