@@ -100,11 +100,11 @@ from M2Crypto import m2, SSL, Err
 
 
 
-_client_m2_ssl_defaults = SSL.Context(weak_crypto = True)
+_client_m2_ssl_defaults = SSL.Context()
 # Do I need to add the pruposes ?
 # _client_m2_ssl_defaults.set_options(m2.X509_PURPOSE_SSL_CLIENT)
 
-_server_m2_ssl_defaults = SSL.Context(weak_crypto = True)
+_server_m2_ssl_defaults = SSL.Context()
 # _server_m2_ssl_defaults.set_options(m2.X509_PURPOSE_SSL_SERVER)
 
 

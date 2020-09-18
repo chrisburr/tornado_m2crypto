@@ -32,7 +32,7 @@ def ssl_options_to_m2_context(ssl_options):
     assert all(k in _SSL_CONTEXT_KEYWORDS for k in ssl_options), ssl_options
     # Can't use create_default_context since this interface doesn't
     # tell us client vs server.
-    context = SSL.Context( protocol = ssl_options.get('ssl_version', 'tls'), weak_crypto = True)
+    context = SSL.Context( protocol = ssl_options.get('ssl_version', 'tls'))
 
 
 
