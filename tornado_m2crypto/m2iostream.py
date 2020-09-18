@@ -80,6 +80,9 @@ TODO: in the iostream._read_to_buffer, we only catch socket.error. This works be
 
 TODO: the _verify_cert is for the time being always returning True
 
+TODO: add the timeout and KEEPALIVE settings
+
+TODO: overwrite the close method to do like DIRAC M2SSLTransport.
 
 """
 
