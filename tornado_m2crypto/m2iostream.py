@@ -78,8 +78,6 @@ TODO: in the iostream._read_to_buffer, we only catch socket.error. This works be
       ssl.SSLError inherits from socket.error, but not M2Crypto.SSL.SSLError, so one might
       need to overwrite that here
 
-TODO: the _verify_cert is for the time being always returning True
-
 TODO: add the timeout and KEEPALIVE settings
 
 TODO: overwrite the close method to do like DIRAC M2SSLTransport.
@@ -223,18 +221,13 @@ class M2IOStream(SSLIOStream):
     def _verify_cert(self, peercert):
         """Returns True if peercert is valid according to the configured
         validation mode and hostname.
-
-        The ssl handshake already tested the certificate for a valid
-        CA signature; the only thing that remains is to check
-        the hostname.
-
-
-        :warning: not used ! Always return true
         """
-        return True
-        checker = SSL.Checker.Checker()
-        if not checker(self.socket.get_peer_cert(), self.socket.addr):
+        checker = getattr(self.socket, 'postConnectionCheck',
+                      self.socket.serverPostConnectionCheck)
+        addr = self.socket.socket.getpeername()[0]
+        if checker and not checker(self.socket.get_peer_cert(), addr):
             return False
+        return True
 
 
     def _handle_connect(self):
