@@ -78,8 +78,6 @@ TODO: in the iostream._read_to_buffer, we only catch socket.error. This works be
       ssl.SSLError inherits from socket.error, but not M2Crypto.SSL.SSLError, so one might
       need to overwrite that here
 
-TODO: add the timeout and KEEPALIVE settings
-
 TODO: overwrite the close method to do like DIRAC M2SSLTransport.
 
 """

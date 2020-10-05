@@ -1,6 +1,8 @@
+import socket
 from M2Crypto import SSL, m2
 from os.path import isdir
 
+DEFAULT_CONNECTION_TIMEOUT=30
 
 _SSL_CONTEXT_KEYWORDS = frozenset(['ssl_version', 'certfile', 'keyfile', 'dhparam',
                                    'cert_reqs', 'verify_depth', 'ca_certs', 'ciphers',
@@ -71,16 +73,25 @@ def ssl_options_to_m2_context(ssl_options):
     return context
 
 
-def m2_wrap_socket(socket, ssl_options, server_hostname=None, **kwargs):
+def m2_wrap_socket(sock, ssl_options, server_hostname=None, **kwargs):
     """Returns an ``M2Crypto.SSL.Connection`` wrapping the given socket.
 
     ``ssl_options`` may be either an `~M2Crypto.SSL.Context` object or a
     dictionary (as accepted by `ssl_options_to_m2_context`).
 
     ``server_side``: Needed ! if True, initialize M2Crypto as a server
+
     """
+
+    # Note: do not attempt to do socket.settimeout, for it is for 
+    # blocking sockets only
+
     context = ssl_options_to_m2_context(ssl_options)
-    connection = SSL.Connection(ctx=context, sock=socket)
+    connection = SSL.Connection(ctx=context, sock=sock)
+
+    # Set the keep alive to True
+    connection.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, True)
+
 
     if server_hostname:
       connection.set_tlsext_host_name(server_hostname)
@@ -89,7 +100,7 @@ def m2_wrap_socket(socket, ssl_options, server_hostname=None, **kwargs):
     connection.server_side = kwargs.get('server_side', False)
 
     # Hum, why do I need that?
-    connection.family = socket.family
+    connection.family = sock.family
 
 
     # Need this for writes that are larger than BIO pair buffers
