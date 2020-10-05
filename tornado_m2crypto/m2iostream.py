@@ -186,13 +186,13 @@ class M2IOStream(SSLIOStream):
                 return
             if res < 0:
                 err_num = self.socket.ssl_get_error(res)
-                print "Err: %s" % err_num
-                print "Err Str: %s" % Err.get_error_reason(err_num)
+                gen_log.error("Err: %s" % err_num)
+                gen_log.error("Err Str: %s" % Err.get_error_reason(err_num))
                 return self.close()
         except SSL.SSLError as e:
             raise
         except socket.error as err:
-            print "Socket error!"
+            gen_log.error("Socket error!")
             # Some port scans (e.g. nmap in -sT mode) have been known
             # to cause do_handshake to raise EBADF and ENOTCONN, so make
             # those errors quiet as well.
@@ -209,11 +209,15 @@ class M2IOStream(SSLIOStream):
         else:
             self._ssl_accepting = False
             if not self._verify_cert(self.socket.get_peer_cert()):
-                print "VALIDATION FAILED!"
+                gen_log.error("VALIDATION FAILED!")
                 self.close()
                 return
-            print "Connect complete! (Sever: %s)!" % self.socket.server_side
+            gen_log.debug("Connect complete! (Sever: %s)!" % self.socket.server_side)
             self._run_ssl_connect_callback()
+
+    def close_fd(self):
+        self.socket.shutdown(socket.SHUT_RDWR)
+        super(M2IOStream, self).close_fd()
 
 
     def _verify_cert(self, peercert):
@@ -327,7 +331,7 @@ class M2IOStream(SSLIOStream):
             if self._connect_future is None:
                 gen_log.warning("Connect error on fd %s: %s",
                                 self.socket.fileno(), errno.errorcode[err])
-            print "Close connect error!"
+            gen_log.warning( "Close connect error!")
             self.close()
             return
         if self._connect_callback is not None:
