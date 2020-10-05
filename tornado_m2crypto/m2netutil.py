@@ -82,9 +82,8 @@ def m2_wrap_socket(socket, ssl_options, server_hostname=None, **kwargs):
     context = ssl_options_to_m2_context(ssl_options)
     connection = SSL.Connection(ctx=context, sock=socket)
 
-    # TODO: maybe enable this ?
-    # if server_hostname:
-    #   connection.set_tlsext_host_name(server_hostname)
+    if server_hostname:
+      connection.set_tlsext_host_name(server_hostname)
 
     # Add an extra attribute to the Connection so we can test on it later
     connection.server_side = kwargs.get('server_side', False)
