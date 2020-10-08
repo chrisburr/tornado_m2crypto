@@ -65,4 +65,3 @@ An HTTPS server converting the certificate to "DIRAC certificates"
 `tox -r -e m2io_dirac`
 
 You can talk to it the same way as the normal HTTPS test, and you can give it a proxy
-Note: on the DIRAC side, one must comment out the registration of the VOMS NID in Core/Security/__init__.py
