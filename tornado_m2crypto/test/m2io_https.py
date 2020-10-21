@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Simple HTTPS test server
 # Run with: tox -e m2io_https
 # Client: curl -k -v https://localhost:12345
@@ -16,7 +20,7 @@ SSL_OPTS = {
   'ca_certs': CERTDIR + 'ca/ca.cert.pem',
 }
 
-print SSL_OPTS
+print(SSL_OPTS)
 #SSL_OPTS = {
 #
 #  'certfile': '/tmp/hostcert/hostcert.pem',
@@ -47,12 +51,12 @@ import tornado.web
 
 class getToken(tornado.web.RequestHandler):
     def get(self):
-        print self.request.get_ssl_certificate().as_text() #False =  dictionnaire, True=Binaire
-        print ("CHRIS %s"%type(self.request.connection.stream))
-        print "CHRIS %s"%len(self.request.get_ssl_certificate_chain())
+        print(self.request.get_ssl_certificate().as_text())  #False =  dictionnaire, True=Binaire
+        print("CHRIS", type(self.request.connection.stream))
+        print("CHRIS", len(self.request.get_ssl_certificate_chain()))
         for c in self.request.connection.stream.socket.get_peer_cert_chain():
-          print ('++++++++++++++++++++++')
-          print c.as_text()
+          print('++++++++++++++++++++++')
+          print(c.as_text())
         self.write("hello\n\n")
 
 application = tornado.web.Application([

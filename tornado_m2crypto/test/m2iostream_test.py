@@ -1,4 +1,7 @@
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 from tornado.concurrent import Future
 from tornado import gen
 from tornado import netutil
