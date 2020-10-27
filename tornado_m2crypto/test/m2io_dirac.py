@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 # Simple HTTPS test server
 # Run with: tox -e m2io_https
 # Client: curl -k -v https://localhost:12345
@@ -48,12 +52,12 @@ from DIRAC.Core.Security.ProxyInfo import getProxyInfo
 class getToken(tornado.web.RequestHandler):
     def get(self):
         # pemCert = self.request.connection.stream.socket.get_peer_cert().as_pem() #False =  dictionnaire, True=Binaire
-        # print "CERT !! %s"%pemCert
+        # print("CERT !!", pemCert)
         # diracCert = X509Certificate()
-        # print "LOADING %s"%diracCert.loadFromString(pemCert)
-        # print "DIRAC CERT !! %s"%diracCert.getSubjectDN()
+        # print("LOADING %s", diracCert.loadFromString(pemCert))
+        # print("DIRAC CERT !!", diracCert.getSubjectDN())
         chainAsText =self.request.get_ssl_certificate().as_pem()
-        print "First in the list %s"%chainAsText
+        print("First in the list" % chainAsText)
         diracChain = X509Chain()
         cert_chain = self.request.get_ssl_certificate_chain()
         for cert in cert_chain:
@@ -61,7 +65,7 @@ class getToken(tornado.web.RequestHandler):
           # diracCert.loadFromString(cert.as_pem())
           # diracCertList.append(diracCert)
           chainAsText += cert.as_pem()
-          print "one more %s"%cert.get_subject()
+          print("one more" % cert.get_subject())
         diracChain.loadChainFromString(chainAsText)
 
         from pprint import pprint

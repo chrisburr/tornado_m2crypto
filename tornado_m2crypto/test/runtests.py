@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 import tornado.test.runtests as original_runtests
 
@@ -13,7 +16,7 @@ import tornado
 
 
 
-print tornado.iostream
+print(tornado.iostream)
 tornado.iostream.SSLIOStream.configure('tornado_m2crypto.m2iostream.M2IOStream')
 
 
@@ -35,7 +38,7 @@ M2_TEST_MODULES = [    'm2iostream_test.TestIOStreamM2',
 # M2_TEST_MODULES.append('m2iostream_test.TestIOStreamM2')
 
 
-print "RUNNING %s"%M2_TEST_MODULES
+print("RUNNING %s" % M2_TEST_MODULES)
 
 
 

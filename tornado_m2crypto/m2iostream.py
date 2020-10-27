@@ -50,7 +50,7 @@ A complete example would be
 
   class getToken(tornado.web.RequestHandler):
       def get(self):
-          print self.request.get_ssl_certificate().as_text()
+          print(self.request.get_ssl_certificate().as_text())
           self.write("hello\n\n")
 
   application = tornado.web.Application([
@@ -92,8 +92,6 @@ from tornado.iostream import SSLIOStream, _ERRNO_WOULDBLOCK,IOStream
 from tornado.log import gen_log
 
 from M2Crypto import m2, SSL, Err
-
-
 
 
 _client_m2_ssl_defaults = SSL.Context()
@@ -297,7 +295,7 @@ class M2IOStream(SSLIOStream):
                 #       implementation of recv_into, or work out why it
                 #       sometimes gets a None returned anyway, it's probably
                 #       a race between the handshake and the first read?
-                #print "Nothing to read? %s"%repr(e)
+                # print("Nothing to read?", repr(e))
 
                 return None
             except SSL.SSLError as e:

@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
 import requests
 #CERT='test.crt'
 #KEY='test.key'
@@ -13,14 +17,14 @@ KEY=os.path.realpath(CERTDIR  + 'MrBoinc/userkey.pem')
 #CERT= os.path.realpath(CERTDIR + 'MrBoinc/proxy.pem')
 #KEY= os.path.realpath(CERTDIR  + 'MrBoinc/proxy.pem')
 
-print (CERT,KEY)
+print(CERT, KEY)
 import sys
 
 
 
 
 SERVER = 'https://localhost:12345'
-print requests.get('https://localhost:12345', cert = (CERT,KEY), verify = False)
+print(requests.get('https://localhost:12345', cert = (CERT,KEY), verify = False))
 sys.exit(0)
 
 # THIS IS FOR LATER POTENTIALLY
@@ -52,6 +56,6 @@ class DESAdapter(HTTPAdapter):
 
 s = requests.Session()
 s.mount(SERVER, DESAdapter())
-print s.get(SERVER, cert = (CERT,KEY), verify = False)
+print(s.get(SERVER, cert = (CERT,KEY), verify = False))
 
 #requests.get('https://localhost:12345', cert = (CERT,KEY), verify = False)
