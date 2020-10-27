@@ -10,6 +10,7 @@ lib64
 
 # Packages
 *.egg
+.eggs
 *.egg-info
 dist
 build

@@ -1,23 +1,38 @@
-import sys
+from io import open
+from os.path import dirname, join
 
-try:
-    import setuptools
-    from setuptools import setup
-except ImportError:
-    setuptools = None
-    from distutils.core import setup
+from setuptools import setup
 
-version = '0.0.1'
 
-kwargs = {}
+with open(join(dirname(__file__), 'README.md'), "rt") as fp:
+    long_description = fp.read()
 
-if setuptools is not None:
-
-    if sys.version_info < (3, 4):
-        kwargs['install_requires']= ['enum34']
 
 setup(
     name='tornado_m2crypto',
-    version=version,
+    use_scm_version=True,
+    description="Extension for running tornado with M2Crypto instead of the standard python SSL module",
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    url='https://github.com/DIRACGrid/tornado_m2crypto',
+    setup_requires=['setuptools_scm'],
+    install_requires=[
+        'enum34; python_version < "3.4"',
+        'm2crypto',
+        'tornado',
+    ],
     packages=['tornado_m2crypto', 'tornado_m2crypto.test'],
-    **kwargs)
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+    ],
+    keywords='dirac ',
+    python_requires='>=2.7',
+    extras_require={
+        'testing': ['requests'],
+    },
+    project_urls={
+        'Bug Reports': 'https://github.com/DIRACGrid/tornado_m2crypto/issues',
+        'Source': 'https://github.com/DIRACGrid/tornado_m2crypto/',
+    },
+)
