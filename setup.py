@@ -24,7 +24,7 @@ setup(
     packages=['tornado_m2crypto', 'tornado_m2crypto.test'],
     classifiers=[
         'Development Status :: 4 - Beta',
-        'OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
     ],
     keywords='dirac ',
     python_requires='>=2.7',
